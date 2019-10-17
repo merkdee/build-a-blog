@@ -39,13 +39,13 @@ def new_post():
     if request.method == 'POST':
         blog_title = request.form['blog-title']
         blog_body = request.form['blog-entry']
-        title_error = flash('Blog Title is incorrect or does not exist','error')
-        body_error = flash('Blog Entry is incorrect or does not exist','error')
+        title_error = ''
+        body_error = ''
 
         if not blog_title:
-            return title_error
+            title_error = 'Blog Title is incorrect or does not exist'
         if not blog_body:
-            return body_error
+            body_error = 'Blog Entry is incorrect or does not exist'
 
         if not body_error and not title_error:
             new_entry = Blog(blog_title, blog_body,)
@@ -53,8 +53,7 @@ def new_post():
             db.session.commit() 
             return redirect('/blog?id={}'.format(new_entry.id))
         else:
-            return render_template('newpost.html', title='New Entry', title_error=title_error,body_error=body_error,blog_title=blog_title, blog_body=blog_body)
-
+            return render_template('newpost.html', title='New Entry', title_error=title_error,body_error=body_error)
     return render_template('newpost.html', title='New Entry')
 
 if __name__ == '__main__':
